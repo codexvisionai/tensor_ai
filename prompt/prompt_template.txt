@@ -1,0 +1,157 @@
+Siz tajribali SQL muhandisisiz.
+
+Sizga quyidagi ma'lumotlar bazasi berilgan. Baza kirillcha, ruscha matnlarni ham o'z ichiga oladi — ularni ham inobatga oling.
+
+🚫 Hech qanday tushuntirish, izoh, “Here's the query”, markdown, ` ```sql ` yoki boshqa qo‘shimcha belgilarni yozmang.
+
+✅ Faqat **bitta satrli** va `SELECT` bilan boshlanuvchi aniq **SQL** so‘rov yozing. Javob faqat SQL satri bo‘lishi kerak — boshqa hech narsa emas!
+
+🧠 Eslatma: agar kerakli ustun boshqa jadvalda bo‘lsa, foreign key orqali `JOIN` ishlatish mumkin.
+Misol: Base_price 100000 dan katta bo‘lgan lotlar uchun sotuvchilar:
+Misol:
+SELECT cs.seller_name
+FROM cleaned_sold_lot cs
+JOIN cleaned_lot cl ON cs.lot_id = cl.id
+WHERE cl.base_price::numeric > 100000;
+
+📦 SCHEMA (with descriptions):
+
+🔹 Table: cleaned_personal — personal identification records
+- id (int): Unique ID
+- birth_date (date): Person's birthdate data only text form example -> 1965-01-01
+- document (text): Document type example -> ЎЗБЕКИСТОН ФУҚАРОСИНИНГ ID КАРТАСИ
+- expiry_date (date): Document expiry exaple -> 2033-08-13 
+- first_name / last_name / middle_name (text): Full name example -> Shuxrat / Ro‘Zimurodov / Yusupovich
+- issue_date (date): When document was issued example -> 2023-08-14
+- issued_by (text): Issuing place or region_name example -> NAVOIY TUMANI
+- organization_name (text) Organization info example -> "Навоийазот" АЖ
+- organization_stir (text): example -> 200002933 
+- passport_series_number (text): Passport/ID number example -> AD4274810
+- position (text): Job title example -> OПEPATOP ЗAПPABOЧHЫX CTAHЦИЙ
+- position_count (int): Number of times changed position example -> 0 or 1
+- stir (text): Personal taxpayer ID example -> just id 
+- region_id (int): FK to cleaned_region.id example -> numbers int id
+
+
+
+🔹 Table: cleaned_region — regional list
+- id (int): Region ID example -> 1,2,3,4
+- datetime_created (timestamp) example -> 2025-04-01 15:55:46
+- datetime_updated (timestamp) example -> 2025-04-01 15:55:46
+- name (text): Region name example -> Самарқанд вилояти
+
+
+
+
+🔹 Table: cleaned_organization — registered organizations
+- id (bigint) unique id example -> 1,2,3
+- datetime_created / datetime_updated (timestamp) example -> 2025-04-11 23:16:10
+- inn (text): ID example -> 305272204
+- name (text): Organization name example -> "ZAMIRBEK TAXIATASH" ХК
+- type (text):  example -> PRIVATE or STATE E.g.,
+- warehouse1c_id (text): FK to warehouse example -> e4022827-19c1-11eb-86a8-a0d3c1060d4b
+- district_id (double precision): Related area example -> 1,2,3,4,54,5
+
+
+🔹 Table cleaned_sold_lot:
+ - cleaned_sold_lot.id (bigint): Unique ID
+ - cleaned_sold_lot.datetime_created (timestamp): sotilgan LOTning yaratilgan vaqti (misol: 2025-04-03 21:15:26.907408)
+ - cleaned_sold_lot.datetime_updated (timestamp): sotilgan LOTning yangilangan vaqti (misol: 2025-06-26 00:38:20.273103)
+ - cleaned_sold_lot.account (varchar): sotilgan LOTning akkaunt raqami (misol: 20208000605743224001)
+ - cleaned_sold_lot.bank_name (varchar): Bank nomi (misol: ОАТБ Агробанк Учкургон булими)
+ - cleaned_sold_lot.bargain_status (varchar): Savdo holati (misol: "Исполнено")
+ - cleaned_sold_lot.buyer_address (varchar): Sotib oluvchi manzili (misol: Ферганская область Бувайдинский район Ташаббускор 324,Ташаббускор,324)
+ - cleaned_sold_lot.buyer_inn (varchar): Sotib oluvchi INN raqami (misol: 311056350)
+ - cleaned_sold_lot.buyer_name (varchar): Sotib oluvchi korxana nomi (misol: GOLD BREND INVEST 2024 MCHJ)
+ - cleaned_sold_lot.contract_name (varchar): Shartnoma nomi (misol: Сульфат аммония, в мешках, АО "Максам Чирчик")
+ - cleaned_sold_lot.contract_number (varchar): Shartnoma raqami (misol: 57084)
+ - cleaned_sold_lot.contract_type (integer): Shartnoma turi (misol: 0)
+ - cleaned_sold_lot.currency (varchar): Valyuta (misol: сум)
+ - cleaned_sold_lot.delivery_date (date): Yetkazib berish sanasi (misol: 2024-07-25)
+ - cleaned_sold_lot.delivery_date_deadline (integer): Yetkazib berish muddati (misol: 10)
+ - cleaned_sold_lot.lot_id (bigint) ← foregin key to cleaned_lot.id: Lot ID (misol: 424717)
+ - cleaned_sold_lot.measure_unit (varchar): O‘lchov birligi (misol: тонна)
+ - cleaned_sold_lot.mfo (varchar): Bank MFO raqami (misol: 00973)
+ - cleaned_sold_lot.pay_date (date): To‘lov sanasi (misol: 2024-07-08)
+ - cleaned_sold_lot.payment_date_deadline (integer): To'lov muddati (misol: 5)
+ - cleaned_sold_lot.price_per_contract (double precision): Shartnoma bo‘yicha narx (misol: 2221002)
+ - cleaned_sold_lot.product_name (varchar): Mahsulot nomi (misol: Сульфат аммония, в мешках, АО "Максам Чирчик")
+ - cleaned_sold_lot.quantity (integer): Sotilgan miqdor (misol: 100)
+ - cleaned_sold_lot.quantity_in_lot (integer): LOTdagi miqdor (misol: 25)
+ - cleaned_sold_lot.seller_address (varchar): Sotuvchi manzili (misol: Ташкентская область г. Чиpчик ул.Ташкентская, 2)
+ - cleaned_sold_lot.seller_inn (varchar): Sotuvchi INN raqami (misol: 200941518)
+ - cleaned_sold_lot.seller_name (varchar): Sotuvchi korxana nomi (misol: Maxam-Chirchiq AJ)
+ - cleaned_sold_lot.session (integer): Savdo sessiyasi (misol: 1)
+ - cleaned_sold_lot.start_price (double precision): Boshlang‘ich narx (misol: 2050000)
+ - cleaned_sold_lot.transaction_date (timestamp): Savdo sanasi (misol: 2024-07-08 11:59:48.007)
+ - cleaned_sold_lot.transaction_number (varchar): Savdo raqami (misol: 7012293)
+ - cleaned_sold_lot.transaction_sum (double precision): Savdo summasi (misol: 55525050)
+ - cleaned_sold_lot.warehouse (varchar): Ombor nomi (misol: «Maxam-Chirchiq» AJning tayyor mahsulotlar ombori. Manzil: Toshkent viloyati, Chirchiq shahri, Toshk)
+ - cleaned_sold_lot.transaction_date_as_date (date): Savdo sanasi (misol: 2024-07-08)
+ - cleaned_sold_lot.real_quantity (double precision): Real sotilgan miqdor (misol: 25)
+ - cleaned_sold_lot.mxik_code (varchar): MXIK kodi (misol: 03102001002000000)
+ - cleaned_sold_lot.transaction_sum_calculated (double precision): Hisoblangan savdo summasi (misol: 55525050)
+ - cleaned_sold_lot.real_quantity_for_amount (double precision): Real miqdor summasi (misol: 25)
+ - cleaned_sold_lot.converted_measure_unit (varchar): O‘lchov birligi (misol: тонна)
+ - cleaned_sold_lot.product_main_category (varchar): Mahsulot asosiy kategoriyasi (misol: Aммоний сулфат)
+ - cleaned_sold_lot.mxik_name (varchar): MXIK nomi (misol: Aммоний сулфат)
+ - cleaned_sold_lot.buyer_phone (varchar): Sotib oluvchi telefon raqami (misol: +998913256663)
+ - cleaned_sold_lot.seller_phone (varchar): Sotuvchi telefon raqami (misol: +998781507304)
+
+
+🔹Table cleaned_lot:
+ - cleaned_lot.id (bigint): Unique ID
+ - cleaned_lot.datetime_created (timestamp): LOTning yaratilgan vaqti (misol: 2025-04-03 21:15:26.907408)
+ - cleaned_lot.datetime_updated (timestamp): LOTning yangilangan vaqti (misol: 2025-06-26 00:38:20.273103)
+ - cleaned_lot.base_price (varchar): LOTning asosiy narxi (misol: 2050000.00)
+ - cleaned_lot.brand (varchar): LOT brendi (misol: Аммиачная селитра)
+ - cleaned_lot.contract_number (varchar): Shartnoma raqami (misol: 95268)
+ - cleaned_lot.date (timestamp): LOT sanasi (misol: 2025-01-03 00:00:00)
+ - cleaned_lot.lot (integer): LOT raqami (misol: 1)
+ - cleaned_lot.measure_unit (varchar): O‘lchov birligi (misol: тонна)
+ - cleaned_lot.product_group_name (varchar): Mahsulot guruhi nomi (misol: Минеральные удобрения)
+ - cleaned_lot.product_name (varchar): Mahsulot nomi (misol: Аммиачная селитра марки "Б", в мешках, АО "Ферганаазот")
+ - cleaned_lot.product_type_name (varchar): Mahsulot turi nomi (misol: внутренний)
+ - cleaned_lot.seller_name (varchar): Sotuvchi nomi (misol: АО Fargonaazot)
+ - cleaned_lot.seller_region (varchar): Sotuvchi viloyati (misol: Ферганская область)
+ - cleaned_lot.session (integer): Savdo sessiyasi (misol: 1)
+ - cleaned_lot.set_volume_tons (varchar): LOT hajmi (misol: 50.000000)
+ - cleaned_lot.sold_volume_tons (varchar): Sotilgan LOT hajmi (misol: 3.000000)
+ - cleaned_lot.sold_volume_uzs (varchar): Sotilgan LOT hajmi (UZS) (misol: 8854050.00)
+
+
+
+Table: `cleaned_warehouse`
+- `id`: Warehouse ID. example -> 12, 244, 21, 64
+- `organization_id`: References `cleaned_organization.id`. example -> 12, 132, 53
+- `name`: Name of the warehouse. example -> Склад электроцехная, Цех 44 ГП, Марказий омбор
+- `latitude`, `longitude`: Location coordinates. example -> 63.3592, 39.5117
+- `datetime_created`, `datetime_updated` example -> 2025-04-11 14:48:07.149547
+- `warehouse_type`, example -> STORAGE
+
+
+
+Table: `cleaned_transfer`
+- `id` id example -> 4161398
+- `datetime_created`, `datetime_updated` example -> 2025-04-11 14:48:07.149547
+- `approved_date` example -> 2025-05-31 10:27:59.013248
+- `total_quantity` example -> 2500
+- `approved_user_id`: References `cleaned_personal.id` example -> 23,421
+- `from_warehouse_id`: References `cleaned_warehouse.id` example -> 604, 1041
+- `to_warehouse_id`: References `cleaned_warehouse.id` example -> 1175225, 2800
+- `organization_id`: References `cleaned_organization.id` example -> 12, 43, 67
+- `lot_id`: References `cleaned_lot.id` example -> 4238144, 4645204, 2729976
+- `product_name` example -> Карбамид минерал ўғити (50 кг ли қопда азот микдори 46.2 % дан кам булмаган) минерал ўғити, Aммиакли селитра
+- `transfer_status` example -> ON_THE_ROAD, DELIVERED
+- `driver_name` example -> TOSHEV SHERALI TUYMUROTOVICH, "NUMON POLVON PAXTAZORI" FX, Ali
+- `driver_pinfl` example -> 31501792350075, 1275924833
+- `transport_number` example -> 75 J 108 PA, 50 G 387 AB
+- `transport_model` example -> MAZ 5440, TTZ-811, ZIL 4514
+- `deliverer_pinfl` example -> 30306902340022, 06233781284535, 31104731790015
+
+---
+
+❓ Savol: {question}
+
+SQL:
+""")

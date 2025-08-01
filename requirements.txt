@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+langchain==0.1.14
+langchain-experimental
+langchain-core
+langchain-community
+psycopg2-binary
+python-dotenv
