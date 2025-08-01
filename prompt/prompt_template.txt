@@ -14,43 +14,77 @@ FROM cleaned_sold_lot cs
 JOIN cleaned_lot cl ON cs.lot_id = cl.id
 WHERE cl.base_price::numeric > 100000;
 
-📦 SCHEMA (with descriptions):
-
-🔹 Table: cleaned_personal — personal identification records
-- id (int): Unique ID
-- birth_date (date): Person's birthdate data only text form example -> 1965-01-01
-- document (text): Document type example -> ЎЗБЕКИСТОН ФУҚАРОСИНИНГ ID КАРТАСИ
-- expiry_date (date): Document expiry exaple -> 2033-08-13 
-- first_name / last_name / middle_name (text): Full name example -> Shuxrat / Ro‘Zimurodov / Yusupovich
-- issue_date (date): When document was issued example -> 2023-08-14
-- issued_by (text): Issuing place or region_name example -> NAVOIY TUMANI
-- organization_name (text) Organization info example -> "Навоийазот" АЖ
-- organization_stir (text): example -> 200002933 
-- passport_series_number (text): Passport/ID number example -> AD4274810
-- position (text): Job title example -> OПEPATOP ЗAПPABOЧHЫX CTAHЦИЙ
-- position_count (int): Number of times changed position example -> 0 or 1
-- stir (text): Personal taxpayer ID example -> just id 
-- region_id (int): FK to cleaned_region.id example -> numbers int id
+📦 SXEMA (tavsiflari bilan):
 
 
+🔹Table cleaned_personal
+cleaned_personal.id — id raqam (misol: 125)
+cleaned_personal.birth_date — tug‘ilgan sana (misol: 1965-01-01)
+cleaned_personal.document — hujjat turi (misol: ЎЗБЕКИСТОН ФУҚАРОСИНИНГ ID КАРТАСИ)
+cleaned_personal.expiry_date — hujjat amal muddati (misol: 2033-08-13)
+cleaned_personal.first_name — ism (misol: Shuxrat)
+cleaned_personal.last_name — familiya (misol: Ro‘zimurodov)
+cleaned_personal.middle_name — otasining ismi (misol: Yusupovich)
+cleaned_personal.issue_date — hujjat berilgan sana (misol: 2023-08-14)
+cleaned_personal.issued_by — kim bergan (misol: NAVOIY TUMANI)
+cleaned_personal.organization_name — tashkilot nomi (misol: "Навоийазот" АЖ)
+cleaned_personal.organization_stir — tashkilot STIR (misol: 200002933)
+cleaned_personal.passport_series_number — pasport/ID raqam (misol: AD4274810)
+cleaned_personal.position — lavozim (misol: ОПЕРАТОР ЗАПРАВОЧНЫХ СТАНЦИЙ)
+cleaned_personal.position_count — lavozim o‘zgarish soni (misol: 0)
+cleaned_personal.stir — shaxsiy STIR (misol: 111009933)
+cleaned_personal.region_id — region FK id (misol: 1)
 
-🔹 Table: cleaned_region — regional list
-- id (int): Region ID example -> 1,2,3,4
-- datetime_created (timestamp) example -> 2025-04-01 15:55:46
-- datetime_updated (timestamp) example -> 2025-04-01 15:55:46
-- name (text): Region name example -> Самарқанд вилояти
+
+🔹Table cleaned_region
+cleaned_region.id — hudud ID (misol: 1)
+cleaned_region.datetime_created — yaratilgan vaqt (misol: 2025-04-01 15:55:46)
+cleaned_region.datetime_updated — o‘zgartirilgan vaqt (misol: 2025-04-01 15:55:46)
+cleaned_region.name — hudud nomi (misol: Самарқанд вилояти)
+
+
+🔹Table cleaned_organization
+cleaned_organization.id — tashkilot ID (misol: 1)
+cleaned_organization.datetime_created — yaratilgan vaqt (misol: 2025-04-11 23:16:10)
+cleaned_organization.datetime_updated — o‘zgartirilgan vaqt (misol: 2025-04-11 23:16:10)
+cleaned_organization.inn — STIR raqami (misol: 305272204)
+cleaned_organization.name — tashkilot nomi (misol: "ZAMIRBEK TAXIATASH" ХК)
+cleaned_organization.type — tashkilot turi (misol: PRIVATE)
+cleaned_organization.warehouse1c_id — ombor UUID (misol: e4022827-19c1-11eb-86a8-a0d3c1060d4b)
+cleaned_organization.district_id — tuman ID (misol: 5)
 
 
 
+🔹Table cleaned_warehouse
+cleaned_warehouse.id — ombor ID (misol: 21)
+cleaned_warehouse.organization_id — tashkilot FK ID (misol: 132)
+cleaned_warehouse.name — ombor nomi (misol: Марказий омбор)
+cleaned_warehouse.latitude — kenglik koordinatasi (misol: 63.3592)
+cleaned_warehouse.longitude — uzunlik koordinatasi (misol: 39.5117)
+cleaned_warehouse.datetime_created — yaratilgan vaqt (misol: 2025-04-11 14:48:07.149547)
+cleaned_warehouse.datetime_updated — o‘zgartirilgan vaqt (misol: 2025-04-11 14:48:07.149547)
+cleaned_warehouse.warehouse_type — ombor turi (misol: STORAGE)
 
-🔹 Table: cleaned_organization — registered organizations
-- id (bigint) unique id example -> 1,2,3
-- datetime_created / datetime_updated (timestamp) example -> 2025-04-11 23:16:10
-- inn (text): ID example -> 305272204
-- name (text): Organization name example -> "ZAMIRBEK TAXIATASH" ХК
-- type (text):  example -> PRIVATE or STATE E.g.,
-- warehouse1c_id (text): FK to warehouse example -> e4022827-19c1-11eb-86a8-a0d3c1060d4b
-- district_id (double precision): Related area example -> 1,2,3,4,54,5
+
+🔹Table cleaned_transfer
+cleaned_transfer.id — id raqam (misol: 4161398)
+cleaned_transfer.datetime_created — yaratilgan sana (misol: 2025-04-11 14:48:07.149547)
+cleaned_transfer.datetime_updated — o‘zgartirilgan sana (misol: 2025-04-11 14:48:07.149547)
+cleaned_transfer.approved_date — tasdiqlangan sana (misol: 2025-05-31 10:27:59.013248)
+cleaned_transfer.total_quantity — umumiy miqdor (misol: 2500)
+cleaned_transfer.approved_user_id — tasdiqlagan foydalanuvchi ID (misol: 421)
+cleaned_transfer.from_warehouse_id — yuboruvchi ombor ID (misol: 604)
+cleaned_transfer.to_warehouse_id — qabul qiluvchi ombor ID (misol: 2800)
+cleaned_transfer.organization_id — tashkilot ID (misol: 43)
+cleaned_transfer.lot_id — partiya ID (misol: 4238144)
+cleaned_transfer.product_name — mahsulot nomi (misol: Аммиакли селитра)
+cleaned_transfer.transfer_status — holati (misol: DELIVERED)
+cleaned_transfer.driver_name — haydovchi ismi (misol: TOSHEV SHERALI TUYMUROTOVICH)
+cleaned_transfer.driver_pinfl — haydovchi PINFL (misol: 31501792350075)
+cleaned_transfer.transport_number — mashina raqami (misol: 75 J 108 PA)
+cleaned_transfer.transport_model — mashina modeli (misol: MAZ 5440)
+cleaned_transfer.deliverer_pinfl — yetkazuvchi PINFL (misol: 30306902340022)
+
 
 
 🔹 Table cleaned_sold_lot:
@@ -118,36 +152,6 @@ WHERE cl.base_price::numeric > 100000;
  - cleaned_lot.set_volume_tons (varchar): LOT hajmi (misol: 50.000000)
  - cleaned_lot.sold_volume_tons (varchar): Sotilgan LOT hajmi (misol: 3.000000)
  - cleaned_lot.sold_volume_uzs (varchar): Sotilgan LOT hajmi (UZS) (misol: 8854050.00)
-
-
-
-Table: `cleaned_warehouse`
-- `id`: Warehouse ID. example -> 12, 244, 21, 64
-- `organization_id`: References `cleaned_organization.id`. example -> 12, 132, 53
-- `name`: Name of the warehouse. example -> Склад электроцехная, Цех 44 ГП, Марказий омбор
-- `latitude`, `longitude`: Location coordinates. example -> 63.3592, 39.5117
-- `datetime_created`, `datetime_updated` example -> 2025-04-11 14:48:07.149547
-- `warehouse_type`, example -> STORAGE
-
-
-
-Table: `cleaned_transfer`
-- `id` id example -> 4161398
-- `datetime_created`, `datetime_updated` example -> 2025-04-11 14:48:07.149547
-- `approved_date` example -> 2025-05-31 10:27:59.013248
-- `total_quantity` example -> 2500
-- `approved_user_id`: References `cleaned_personal.id` example -> 23,421
-- `from_warehouse_id`: References `cleaned_warehouse.id` example -> 604, 1041
-- `to_warehouse_id`: References `cleaned_warehouse.id` example -> 1175225, 2800
-- `organization_id`: References `cleaned_organization.id` example -> 12, 43, 67
-- `lot_id`: References `cleaned_lot.id` example -> 4238144, 4645204, 2729976
-- `product_name` example -> Карбамид минерал ўғити (50 кг ли қопда азот микдори 46.2 % дан кам булмаган) минерал ўғити, Aммиакли селитра
-- `transfer_status` example -> ON_THE_ROAD, DELIVERED
-- `driver_name` example -> TOSHEV SHERALI TUYMUROTOVICH, "NUMON POLVON PAXTAZORI" FX, Ali
-- `driver_pinfl` example -> 31501792350075, 1275924833
-- `transport_number` example -> 75 J 108 PA, 50 G 387 AB
-- `transport_model` example -> MAZ 5440, TTZ-811, ZIL 4514
-- `deliverer_pinfl` example -> 30306902340022, 06233781284535, 31104731790015
 
 ---
 
